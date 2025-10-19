@@ -1,17 +1,12 @@
-import LoginPrompt from "./features/LoginPrompt/LoginPrompt";
+import LoginPrompt from "@/features/LoginPrompt/LoginPrompt";
+import { Layout } from "@/components/Layout/Layout.tsx";
 
 function App() {
-	return (
-		<div
-			className="w-screen h-screen flex items-center justify-center text-white "
-			style={{
-				background:
-					"radial-gradient(128.47% 70.71% at 50% 50%, var(--background-from) 27.4%, var(--background-to) 100%)",
-			}}
-		>
-			<LoginPrompt />
-		</div>
-	);
+  return (
+    <Layout>
+      <LoginPrompt />
+    </Layout>
+  );
 }
 
 export default App;

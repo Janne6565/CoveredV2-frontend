@@ -1,7 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import ShinyText from "../ShinyText";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
@@ -94,7 +93,7 @@ function Button({
 				</motion.button>
 			</TooltipTrigger>
 			{props.tooltip && (
-				<TooltipContent className="text-gray-300">
+				<TooltipContent className="text-gray-300" side={"bottom"}>
 					{props.tooltip}
 				</TooltipContent>
 			)}
