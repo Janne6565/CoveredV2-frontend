@@ -78,7 +78,7 @@ function Button({
 					variants={props.variants}
 					initial={props.initial}
 					animate={props.animate}
-					className={`${className} ${props.disabled ? "bg-gray-800" : "bg-primary cursor-pointer"}`}
+					className={`${className} ${props.disabled ? "bg-gray-800" : "bg-primary cursor-pointer"}` + " transition-colors duration-300"}
 					onClick={props.onClick}
 				>
 					{shiny ? (
