@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { motion } from "motion/react";
 import { useCallback, useState } from "react";
 import { SteamUrlInput } from "@/features/LoginPrompt/SteamUrlInput/SteamUrlInput.tsx";
 import { HeroSection } from "@/components/HeroSection/HeroSection.tsx";
@@ -8,6 +7,9 @@ import { useQuery } from "@tanstack/react-query";
 import { loadSteamId } from "@/api/apiService.ts";
 import { useDispatch } from "react-redux";
 import { setSteamId } from "@/store/slices/userSetupSlice.ts";
+
+const buttonFromAnimation = { opacity: 0 };
+const buttonToAnimation = { opacity: 1, delay: 1.3 };
 
 const LoginPrompt = () => {
   const [wasButtonClicked, setWasButtonClicked] = useState(false);
@@ -43,7 +45,7 @@ const LoginPrompt = () => {
   }, [wasButtonClicked, steamProfileUrl, steamId]);
 
   const isSteamProfileUrlValid = steamProfileUrl.startsWith("https://steamcommunity.com/id") || steamProfileUrl.startsWith("https://steamcommunity.com/profiles");
-  const isButtonDisabled = wasButtonClicked && (!!error || isLoading);
+  const isButtonDisabled = wasButtonClicked && (!!error || isLoading || !isSteamProfileUrlValid);
 
   const getTooltipText = () => {
     if (!wasButtonClicked) return "Get yourself Covered";
@@ -62,24 +64,16 @@ const LoginPrompt = () => {
           title="Covered"
           tagline="Customize your Steam Library"
         >
-          <motion.div
-            className="flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row ">
+          <div className="flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row">
             <SteamUrlInput
               onChange={setSteamProfileUrl}
               isVisible={wasButtonClicked}
               error={error ? "Invalid Steam Profile URL" : undefined}
+              submitCallback={handleButtonClick}
             />
             <Button
-              variants={{
-                hidden: { opacity: 0, pointerEvents: "none" },
-                visible: {
-                  opacity: 1,
-                  pointerEvents: "auto",
-                  transition: { duration: 0.5, delay: 1.3 }
-                }
-              }}
-              initial="hidden"
-              animate="visible"
+              initialAnimation={buttonFromAnimation}
+              animateAnimation={buttonToAnimation}
               className="mx-auto my-0 px-4 py-3 text-text-primary rounded-md text-2xl font-medium text-[18px] w-fit self-start h-[48px] min-w-[110px]"
               textClassName="text-[18px] font-medium"
               onClick={handleButtonClick}
@@ -89,7 +83,7 @@ const LoginPrompt = () => {
             >
               {!wasButtonClicked ? "Get Started" : !isLoading ? "Continue" : "Loading"}
             </Button>
-          </motion.div>
+          </div>
         </HeroSection>
       </div>
     </div>

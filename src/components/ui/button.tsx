@@ -1,7 +1,8 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import ShinyText from "../ShinyText";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
@@ -37,6 +38,15 @@ const buttonVariants = cva(
 	},
 );
 
+interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeof buttonVariants> {
+	asChild?: boolean;
+	shiny?: boolean;
+	initialAnimation?: { opacity?: number };
+	animateAnimation?: { opacity?: number; delay?: number };
+	textClassName?: string;
+	tooltip?: string;
+}
+
 function Button({
 	className,
 	variant,
@@ -44,42 +54,77 @@ function Button({
 	children,
 	textClassName,
 	shiny = false,
+	initialAnimation,
+	animateAnimation,
 	...props
-}: React.ComponentProps<"button"> &
-	VariantProps<typeof buttonVariants> & {
-		asChild?: boolean;
-		shiny?: boolean;
-		variants?: any;
-		initial?: any;
-		animate?: any;
-		textClassName?: string;
-		tooltip?: string;
-	}) {
+}: ButtonProps) {
+	const buttonRef = useRef<HTMLButtonElement>(null);
+
+	useGSAP(() => {
+    console.log(initialAnimation, animateAnimation);
+    console.log("Button animation triggered");
+		if (initialAnimation) {
+			gsap.set(buttonRef.current, initialAnimation);
+		}
+		if (animateAnimation) {
+			gsap.to(buttonRef.current, {
+				...animateAnimation,
+				duration: 0.5,
+				ease: "power2.out"
+			});
+		}
+	}, [initialAnimation, animateAnimation]);
+
+	const handleMouseEnter = () => {
+		if (props.disabled) return;
+		gsap.to(buttonRef.current, {
+			boxShadow: "0 0 5px rgba(0, 153, 255, 0.3)",
+			scale: 1.03,
+			duration: 0.2,
+			ease: "power2.out"
+		});
+	};
+
+	const handleMouseLeave = () => {
+		if (props.disabled) return;
+		gsap.to(buttonRef.current, {
+			boxShadow: "none",
+			scale: 1,
+			duration: 0.2,
+			ease: "power2.out"
+		});
+	};
+
+	const handleMouseDown = () => {
+		if (props.disabled) return;
+		gsap.to(buttonRef.current, {
+			scale: 0.995,
+			duration: 0.1,
+			ease: "power2.out"
+		});
+	};
+
+	const handleMouseUp = () => {
+		if (props.disabled) return;
+		gsap.to(buttonRef.current, {
+			scale: 1.03,
+			duration: 0.1,
+			ease: "power2.out"
+		});
+	};
+
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
-				<motion.button
-					whileHover={
-						props.disabled
-							? {}
-							: {
-									boxShadow: "0 0 5px rgba(0, 153, 255, 0.3)",
-									scale: 1.03,
-								}
-					}
-					whileTap={
-						props.disabled
-							? {}
-							: {
-									boxShadow: "0 0 5px rgba(0, 153, 255, 0.3)",
-									scale: 0.995,
-								}
-					}
-					variants={props.variants}
-					initial={props.initial}
-					animate={props.animate}
-					className={`${className} ${props.disabled ? "bg-gray-800" : "bg-primary cursor-pointer"}` + " transition-colors duration-300"}
+				<button
+					ref={buttonRef}
+					className={`${className} ${props.disabled ? "bg-gray-800" : "bg-primary cursor-pointer"} transition-colors duration-300`}
 					onClick={props.onClick}
+					onMouseEnter={handleMouseEnter}
+					onMouseLeave={handleMouseLeave}
+					onMouseDown={handleMouseDown}
+					onMouseUp={handleMouseUp}
+					disabled={props.disabled}
 				>
 					{shiny ? (
 						<ShinyText
@@ -90,7 +135,7 @@ function Button({
 					) : (
 						children
 					)}
-				</motion.button>
+				</button>
 			</TooltipTrigger>
 			{props.tooltip && (
 				<TooltipContent className="text-gray-300" side={"bottom"}>
