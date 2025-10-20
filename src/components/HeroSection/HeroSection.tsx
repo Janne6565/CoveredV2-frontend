@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -15,6 +15,7 @@ interface HeroProps {
 export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) => {
   const steamId = useAppSelector((state) => state.user.steamId);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [steamIdMirror, setSteamIdMirror] = useState("");
 
   useGSAP(() => {
     const elements = containerRef.current?.children;
@@ -32,6 +33,12 @@ export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) =
       ease: "power2.out"
     });
   }, { scope: containerRef });
+
+  useEffect(() => {
+    if (steamId) {
+      setSteamIdMirror(steamId);
+    }
+  }, [steamId]);
 
   return (
     <div
@@ -53,8 +60,8 @@ export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) =
       <div>
         <Tooltip>
           <TooltipTrigger>
-            <h5 className="text-m text-secondary/90 font-thin p-0 !select-text cursor-text">
-              {steamId ?? ""}
+            <h5 className={"text-m text-secondary/90 font-thin p-0 !select-text cursor-text transition-opacity duration-300 " + (steamId ? "opacity-100" : "opacity-0")}>
+              {steamIdMirror ?? ""}
             </h5>
           </TooltipTrigger>
           <TooltipContent>
@@ -63,7 +70,9 @@ export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) =
         </Tooltip>
       </div>
 
-      {children}
+      <div className={"relative min-h-[250px]"}>
+        {children}
+      </div>
     </div>
   );
 };

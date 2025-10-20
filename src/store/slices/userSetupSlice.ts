@@ -19,7 +19,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setSteamId: (state, action: PayloadAction<string>) => {
+    setSteamId: (state, action: PayloadAction<string | undefined>) => {
       state.steamId = action.payload;
     },
     setAccessToken: (state, action: PayloadAction<string | undefined>) => {

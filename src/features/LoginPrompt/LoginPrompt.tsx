@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { SteamUrlInput } from "@/features/LoginPrompt/SteamUrlInput/SteamUrlInput.tsx";
 import { HeroSection } from "@/components/HeroSection/HeroSection.tsx";
 import { Header } from "@/components/Header/Header.tsx";
@@ -7,11 +7,18 @@ import { useQuery } from "@tanstack/react-query";
 import { loadSteamId } from "@/api/apiService.ts";
 import { useDispatch } from "react-redux";
 import { setSteamId } from "@/store/slices/userSetupSlice.ts";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { useAppSelector } from "@/store/store.ts";
+import FamilySharedGamesSelection
+  from "@/features/LoginPrompt/FamilySharedGamesSelection/FamilySharedGamesSelection.tsx";
 
 const buttonFromAnimation = { opacity: 0 };
 const buttonToAnimation = { opacity: 1, delay: 1.3 };
 
 const LoginPrompt = () => {
+  const container = useRef<HTMLDivElement>(null);
+  const storedSteamId = useAppSelector((state) => state.user.steamId);
   const [wasButtonClicked, setWasButtonClicked] = useState(false);
   const [steamProfileUrl, setSteamProfileUrl] = useState("");
   const dispatch = useDispatch();
@@ -54,9 +61,49 @@ const LoginPrompt = () => {
     return "";
   };
 
+  useGSAP(() => {
+    if (storedSteamId) {
+      gsap.to(".steam-id-input-container",
+        {
+          opacity: 0,
+          left: "-200px",
+          pointerEvents: "none",
+        });
+
+      gsap.to(".family-shared-games-selection-container",
+        {
+          opacity: 1,
+          left: "50%",
+          pointerEvents: "auto",
+          duration: 0.5,
+          ease: "power2.out",
+          delay: 0.3
+        });
+      setWasButtonClicked(true);
+    } else {
+      gsap.to(".family-shared-games-selection-container",
+        {
+          opacity: 0,
+          left: "300px",
+          pointerEvents: "none",
+          duration: 0.5,
+        });
+
+      gsap.to(".steam-id-input-container",
+        {
+          opacity: 1,
+          left: "50%",
+          pointerEvents: "auto",
+          duration: 0.5,
+          ease: "power2.out",
+          delay: 0.3
+        });
+    }
+  }, { scope: container, dependencies: [storedSteamId] });
+
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-center text-center space-y-5 mb-8 mt-15">
+    <div className="flex flex-col items-center justify-center" ref={container}>
+      <div className="flex flex-col items-center justify-center text-center space-y-5 mb-8 mt-14">
         <Header />
 
         <HeroSection
@@ -64,7 +111,8 @@ const LoginPrompt = () => {
           title="Covered"
           tagline="Customize your Steam Library"
         >
-          <div className="flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row">
+          <div
+            className="flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row steam-id-input-container absolute translate-x-[-50%]">
             <SteamUrlInput
               onChange={setSteamProfileUrl}
               isVisible={wasButtonClicked}
@@ -74,7 +122,6 @@ const LoginPrompt = () => {
             <Button
               initialAnimation={buttonFromAnimation}
               animateAnimation={buttonToAnimation}
-              className="mx-auto my-0 px-4 py-3 text-text-primary rounded-md text-2xl font-medium text-[18px] w-fit self-start h-[48px] min-w-[110px]"
               textClassName="text-[18px] font-medium"
               onClick={handleButtonClick}
               shiny={!isButtonDisabled}
@@ -83,6 +130,10 @@ const LoginPrompt = () => {
             >
               {!wasButtonClicked ? "Get Started" : !isLoading ? "Continue" : "Loading"}
             </Button>
+          </div>
+          <div
+            className="flex flex-col items-center justify-center text-center space-y-5 mt-4 absolute translate-x-[-50%] family-shared-games-selection-container max-w-[80vw] w-[500px]">
+            <FamilySharedGamesSelection />
           </div>
         </HeroSection>
       </div>

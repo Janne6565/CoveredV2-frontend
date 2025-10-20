@@ -61,8 +61,6 @@ function Button({
 	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	useGSAP(() => {
-    console.log(initialAnimation, animateAnimation);
-    console.log("Button animation triggered");
 		if (initialAnimation) {
 			gsap.set(buttonRef.current, initialAnimation);
 		}
@@ -118,7 +116,7 @@ function Button({
 			<TooltipTrigger asChild>
 				<button
 					ref={buttonRef}
-					className={`${className} ${props.disabled ? "bg-gray-800" : "bg-primary cursor-pointer"} transition-colors duration-300`}
+					className={`${className} ${props.disabled ? "bg-gray-800" : "bg-primary cursor-pointer"} transition-colors duration-300 mx-auto my-0 px-4 py-3 text-text-primary rounded-md text-2xl font-medium text-[18px] w-fit self-start h-[48px] min-w-[110px]`}
 					onClick={props.onClick}
 					onMouseEnter={handleMouseEnter}
 					onMouseLeave={handleMouseLeave}
