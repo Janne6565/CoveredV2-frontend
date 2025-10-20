@@ -80,7 +80,7 @@ const LoginPrompt = () => {
               }}
               initial="hidden"
               animate="visible"
-              className="mx-auto my-0 px-4 py-3 text-text-primary rounded-md text-2xl font-medium text-[18px] w-fit self-start h-[48px]"
+              className="mx-auto my-0 px-4 py-3 text-text-primary rounded-md text-2xl font-medium text-[18px] w-fit self-start h-[48px] min-w-[110px]"
               textClassName="text-[18px] font-medium"
               onClick={handleButtonClick}
               shiny={!isButtonDisabled}
