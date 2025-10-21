@@ -90,7 +90,7 @@ const FamilySharedGamesSelection = (props: { visible: boolean }) => {
   }, { dependencies: [userSetup.includeFamily, props.visible] });
 
   return <>
-    <div className={"relative min-h-[350px] w-[250px]"}>
+    <div className={"relative min-h-[300px] w-[250px]"}>
       <div
         className={"flex flex-col gap-4 mt-4 text-gray-300 text-2xl mb-5 absolute translate-x-[-50%] left-[50%] family-shared-selection-decision"}>
         <p className={"w-fit text-text-primary text-xl " + (!props.visible && "select-none")}>
@@ -128,7 +128,7 @@ const FamilySharedGamesSelection = (props: { visible: boolean }) => {
                   goBack();
                 }
               }}
-              className={"flex gap-2 items-center text-2xl text-gray-500 mt-8 pb-1 " + (props.visible ? "cursor-pointer" : "")}
+              className={"flex gap-2 items-center text-2xl text-gray-400 mt-8 pb-1 " + (props.visible ? "cursor-pointer" : "")}
               tabIndex={props.visible ? 0 : -1}>
           <MoveLeft size={40} fontWeight={1} />
           <span className={"relative top-[-2px] " + (!props.visible && "select-none")}>Back</span>

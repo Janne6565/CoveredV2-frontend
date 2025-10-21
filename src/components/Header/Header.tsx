@@ -21,7 +21,7 @@ export const Header = ({ logoDelay = 0.5, small }: HeaderProps) => {
 
   return (
     <div
-      className={(small ? "h-50 " : "h-70") + " transition-all duration-800 delay-500"}
+      className={(small ? "h-50 " : "h-50") + " transition-all duration-800 delay-500"}
     >
       <img
         ref={logoRef}

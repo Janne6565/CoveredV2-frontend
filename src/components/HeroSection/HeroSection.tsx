@@ -1,20 +1,22 @@
-import { type ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useAppSelector } from "@/store/store.ts";
+import { useAppDispatch, useAppSelector } from "@/store/store.ts";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip.tsx";
+import Link from "@/components/ui/Link.tsx";
+import { setAccessToken, setIncludeFamily, setSteamId } from "@/store/slices/userSetupSlice.ts";
 
 interface HeroProps {
   title: string;
   subtitle: string;
   tagline: string;
-  children?: ReactNode;
 }
 
-export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) => {
+export const HeroSection = ({ title, subtitle, tagline }: HeroProps) => {
   const steamId = useAppSelector((state) => state.user.steamId);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
   const [steamIdMirror, setSteamIdMirror] = useState("");
 
   useGSAP(() => {
@@ -43,7 +45,7 @@ export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) =
   return (
     <div
       ref={containerRef}
-      className="flex flex-col space-y-2 px-25"
+      className="flex flex-col space-y-2"
     >
       <h5 className="text-2xl text-secondary font-thin p-0">
         {subtitle}
@@ -57,11 +59,11 @@ export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) =
         {tagline}
       </h5>
 
-      <div>
+      <div className={"transition-all duration-400 " + (steamId ? "h-[50px]" : "h-[0px]")}>
         <Tooltip>
           <TooltipTrigger tabIndex={-1}>
             <h5
-              className={"text-m text-secondary/90 font-thin p-0 !select-text cursor-text transition-opacity duration-300 " + (steamId ? "opacity-100" : "opacity-0")}>
+              className={"text-m text-secondary/90 font-thin p-0 !select-text cursor-text transition-opacity duration-300 italic " + (steamId ? "opacity-100" : "opacity-0 select-none pointer-events-none")}>
               {steamIdMirror ?? ""}
             </h5>
           </TooltipTrigger>
@@ -69,11 +71,15 @@ export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) =
             Your Steam ID
           </TooltipContent>
         </Tooltip>
+        <Link
+          className={"text-m !text-gray-600 font-thin p-0 !select-text cursor-pointer transition-opacity duration-300 block " + (steamId ? "opacity-100" : "opacity-0 select-none pointer-events-none")}
+          onClick={() => {
+            dispatch(setSteamId(undefined));
+            dispatch(setIncludeFamily(undefined));
+            dispatch(setAccessToken(undefined));
+          }}>Logout</Link>
       </div>
 
-      <div className={"relative min-h-[250px]"}>
-        {children}
-      </div>
     </div>
   );
 };

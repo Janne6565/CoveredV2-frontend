@@ -72,8 +72,9 @@ const SetupView = (props: { visible: boolean }) => {
       gsap.to(".steam-id-input-container",
         {
           opacity: 0,
-          left: "-200px",
-          pointerEvents: "none"
+          left: "calc(50% - 200px)",
+          pointerEvents: "none",
+          duration: 0.7
         });
 
       gsap.to(".family-shared-games-selection-container",
@@ -81,18 +82,18 @@ const SetupView = (props: { visible: boolean }) => {
           opacity: 1,
           left: "50%",
           pointerEvents: "auto",
-          duration: 0.5,
+          duration: 0.7,
           ease: "power2.out",
-          delay: 0.3
+          delay: 0.5
         });
       setWasButtonClicked(true);
     } else {
       gsap.to(".family-shared-games-selection-container",
         {
           opacity: 0,
-          left: "calc(50% + 300px)",
+          left: "calc(50% + 200px)",
           pointerEvents: "none",
-          duration: 0.5
+          duration: 0.7
         });
 
       gsap.to(".steam-id-input-container",
@@ -100,17 +101,18 @@ const SetupView = (props: { visible: boolean }) => {
           opacity: 1,
           left: "50%",
           pointerEvents: "auto",
-          duration: 0.5,
+          duration: 0.7,
           ease: "power2.out",
-          delay: 0.3
+          delay: 0.6
         });
     }
   }, { scope: container, dependencies: [storedSteamId, props.visible] });
 
   return (
-    <div ref={container}>
+    <div ref={container}
+         className={"max-h-[60vh] w-[60vw] transition-all duration-1000 " + (storedSteamId !== undefined && props.visible ? "h-[350px]" : "h-[50px]")}>
       <div
-        className={"flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row steam-id-input-container absolute translate-x-[-50%] " + (!props.visible && "pointer-events-none")}>
+        className={"flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row steam-id-input-container absolute translate-x-[-50%] left-[50%] " + (!props.visible && "pointer-events-none")}>
         <SteamUrlInput
           onChange={setSteamProfileUrl}
           isVisible={wasButtonClicked && storedSteamId == undefined}
@@ -131,7 +133,7 @@ const SetupView = (props: { visible: boolean }) => {
         </Button>
       </div>
       <div
-        className="flex flex-col items-center justify-center text-center space-y-5 mt-4 absolute translate-x-[-50%] family-shared-games-selection-container max-w-[80vw] w-[500px]">
+        className="flex flex-col items-center justify-center text-center space-y-5 mt-4 absolute translate-x-[-50%] left-[50%] family-shared-games-selection-container opacity-0 max-w-[80vw] w-[500px]">
         <FamilySharedGamesSelection visible={storedSteamId !== undefined && props.visible} />
       </div>
     </div>

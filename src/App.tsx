@@ -9,6 +9,7 @@ import gsap from "gsap";
 function App() {
   const queryClient = new QueryClient();
   const setupState = useSetupStatus();
+
   useGSAP(() => {
     if (setupState == "complete") {
       gsap.to("#setupView", {
@@ -48,7 +49,7 @@ function App() {
         <div id={"setupView"}>
           <SetupView visible={setupState == "incomplete"} />
         </div>
-        <div id={"gameView"}>
+        <div id={"gameView"} className={"opacity-0 pointer-events-none"}>
           <GameView visible={setupState == "complete"} />
         </div>
       </Layout>
