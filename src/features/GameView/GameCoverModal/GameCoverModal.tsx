@@ -7,6 +7,8 @@ import CoverCard from "@/features/GameView/CoverCard/CoverCard.tsx";
 
 const GameCoverModal = ({ game, closeModalCallback }: { game: Game | null, closeModalCallback: () => void }) => {
   const allCovers = useAppSelector((state) => state.covers.coversForGame);
+  const favoriteCovers = useAppSelector(state => state.user.favorite_covers);
+  const favoriteCoverUuid = game && favoriteCovers[game?.game.uuid ?? ""] ? favoriteCovers[game.game.uuid].uuid : "";
   const arrayCovers = useMemo(() => game && allCovers[game.game.uuid]
       ? Object.values(allCovers[game.game.uuid]).filter(cover => cover.height == 900)
       : [],
@@ -31,7 +33,8 @@ const GameCoverModal = ({ game, closeModalCallback }: { game: Game | null, close
                        itemsPerPageOptions={[12, 24, 36, 48]} />
           <div className={"flex flex-row flex-wrap gap-3 justify-evenly gap-y-10 m-auto w-[80%] py-5"}>
             {game &&
-              currentPageCovers.map((cover) => <CoverCard game={game} cover={cover} key={cover.uuid} />)
+              currentPageCovers.map((cover) => <CoverCard game={game} cover={cover} key={cover.uuid}
+                                                          favoriteCoverUuid={favoriteCoverUuid} />)
             }
           </div>
           <PageControl currentPage={currentPage} maxPage={maxPage} itemsPerPage={pageSize}

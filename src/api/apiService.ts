@@ -17,4 +17,10 @@ const fetchCoversFromGames = async (gameUuids: string[]) => {
   return (await apiClient.post("/covers/games", gameUuids)).data as Cover[];
 };
 
-export { loadSteamId, loadGamesFromFamily, loadGamesFromPlayer, fetchCoversFromGames };
+const exportCovers = async (coverUuids: string[]) => {
+  return await apiClient.post("/covers/export", coverUuids, {
+    responseType: "blob",
+  });
+};
+
+export { loadSteamId, loadGamesFromFamily, loadGamesFromPlayer, fetchCoversFromGames, exportCovers };

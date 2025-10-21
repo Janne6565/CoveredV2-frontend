@@ -10,6 +10,7 @@ import { fuzzyMatchWithScore } from "@/lib/utils.ts";
 import PageControl from "@/features/GameView/PageControl/PageControl.tsx";
 import GameCard from "@/features/GameView/GameCard/GameCard.tsx";
 import GameCoverModal from "@/features/GameView/GameCoverModal/GameCoverModal.tsx";
+import ExportModal from "@/features/GameView/ExportModal/ExportModal.tsx";
 
 const GameView = (props: { visible: boolean }) => {
   const [itemsPerPage, setItemsPerPage] = useState(20);
@@ -167,6 +168,7 @@ const GameView = (props: { visible: boolean }) => {
       </>
     )}
     <GameCoverModal game={openGame ? games[openGame] : null} closeModalCallback={() => setOpenGame(null)} />
+    <ExportModal />
   </div>;
 };
 
