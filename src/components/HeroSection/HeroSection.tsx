@@ -59,8 +59,9 @@ export const HeroSection = ({ title, subtitle, tagline, children }: HeroProps) =
 
       <div>
         <Tooltip>
-          <TooltipTrigger>
-            <h5 className={"text-m text-secondary/90 font-thin p-0 !select-text cursor-text transition-opacity duration-300 " + (steamId ? "opacity-100" : "opacity-0")}>
+          <TooltipTrigger tabIndex={-1}>
+            <h5
+              className={"text-m text-secondary/90 font-thin p-0 !select-text cursor-text transition-opacity duration-300 " + (steamId ? "opacity-100" : "opacity-0")}>
               {steamIdMirror ?? ""}
             </h5>
           </TooltipTrigger>

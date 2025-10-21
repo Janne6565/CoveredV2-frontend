@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useCallback, useRef, useState } from "react";
-import { SteamUrlInput } from "@/features/LoginPrompt/SteamUrlInput/SteamUrlInput.tsx";
-import { HeroSection } from "@/components/HeroSection/HeroSection.tsx";
-import { Header } from "@/components/Header/Header.tsx";
+import { SteamUrlInput } from "@/features/SetupView/SteamUrlInput/SteamUrlInput.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { loadSteamId } from "@/api/apiService.ts";
 import { useDispatch } from "react-redux";
@@ -11,12 +9,12 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useAppSelector } from "@/store/store.ts";
 import FamilySharedGamesSelection
-  from "@/features/LoginPrompt/FamilySharedGamesSelection/FamilySharedGamesSelection.tsx";
+  from "@/features/SetupView/FamilySharedGamesSelection/FamilySharedGamesSelection.tsx";
 
 const buttonFromAnimation = { opacity: 0 };
 const buttonToAnimation = { opacity: 1, delay: 1.3 };
 
-const LoginPrompt = () => {
+const SetupView = (props: { visible: boolean }) => {
   const container = useRef<HTMLDivElement>(null);
   const storedSteamId = useAppSelector((state) => state.user.steamId);
   const [wasButtonClicked, setWasButtonClicked] = useState(false);
@@ -62,12 +60,20 @@ const LoginPrompt = () => {
   };
 
   useGSAP(() => {
+    if (!props.visible) {
+      gsap.to(".family-shared-games-selection-container",
+        { pointerEvents: "none" });
+      gsap.to(".steam-id-input-container",
+        { pointerEvents: "none" });
+      return;
+    }
+
     if (storedSteamId) {
       gsap.to(".steam-id-input-container",
         {
           opacity: 0,
           left: "-200px",
-          pointerEvents: "none",
+          pointerEvents: "none"
         });
 
       gsap.to(".family-shared-games-selection-container",
@@ -84,9 +90,9 @@ const LoginPrompt = () => {
       gsap.to(".family-shared-games-selection-container",
         {
           opacity: 0,
-          left: "300px",
+          left: "calc(50% + 300px)",
           pointerEvents: "none",
-          duration: 0.5,
+          duration: 0.5
         });
 
       gsap.to(".steam-id-input-container",
@@ -99,46 +105,37 @@ const LoginPrompt = () => {
           delay: 0.3
         });
     }
-  }, { scope: container, dependencies: [storedSteamId] });
+  }, { scope: container, dependencies: [storedSteamId, props.visible] });
 
   return (
-    <div className="flex flex-col items-center justify-center" ref={container}>
-      <div className="flex flex-col items-center justify-center text-center space-y-5 mb-8 mt-14">
-        <Header />
-
-        <HeroSection
-          subtitle="Get Yourself"
-          title="Covered"
-          tagline="Customize your Steam Library"
+    <div ref={container}>
+      <div
+        className={"flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row steam-id-input-container absolute translate-x-[-50%] " + (!props.visible && "pointer-events-none")}>
+        <SteamUrlInput
+          onChange={setSteamProfileUrl}
+          isVisible={wasButtonClicked && storedSteamId == undefined}
+          error={error ? "Invalid Steam Profile URL" : undefined}
+          submitCallback={handleButtonClick}
+        />
+        <Button
+          initialAnimation={buttonFromAnimation}
+          animateAnimation={buttonToAnimation}
+          textClassName="text-[18px] font-medium"
+          onClick={handleButtonClick}
+          shiny={!isButtonDisabled}
+          disabled={isButtonDisabled}
+          tooltip={getTooltipText()}
+          tabIndex={steamId == undefined ? 0 : -1}
         >
-          <div
-            className="flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row steam-id-input-container absolute translate-x-[-50%]">
-            <SteamUrlInput
-              onChange={setSteamProfileUrl}
-              isVisible={wasButtonClicked}
-              error={error ? "Invalid Steam Profile URL" : undefined}
-              submitCallback={handleButtonClick}
-            />
-            <Button
-              initialAnimation={buttonFromAnimation}
-              animateAnimation={buttonToAnimation}
-              textClassName="text-[18px] font-medium"
-              onClick={handleButtonClick}
-              shiny={!isButtonDisabled}
-              disabled={isButtonDisabled}
-              tooltip={getTooltipText()}
-            >
-              {!wasButtonClicked ? "Get Started" : !isLoading ? "Continue" : "Loading"}
-            </Button>
-          </div>
-          <div
-            className="flex flex-col items-center justify-center text-center space-y-5 mt-4 absolute translate-x-[-50%] family-shared-games-selection-container max-w-[80vw] w-[500px]">
-            <FamilySharedGamesSelection />
-          </div>
-        </HeroSection>
+          {!wasButtonClicked ? "Get Started" : !isLoading ? "Continue" : "Loading"}
+        </Button>
+      </div>
+      <div
+        className="flex flex-col items-center justify-center text-center space-y-5 mt-4 absolute translate-x-[-50%] family-shared-games-selection-container max-w-[80vw] w-[500px]">
+        <FamilySharedGamesSelection visible={storedSteamId !== undefined && props.visible} />
       </div>
     </div>
   );
 };
 
-export default LoginPrompt;
+export default SetupView;

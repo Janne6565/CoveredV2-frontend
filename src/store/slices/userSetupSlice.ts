@@ -5,6 +5,7 @@ type UserState = {
   steamId: string | undefined;
   accessToken: string | undefined;
   includeFamily: boolean | undefined;
+  finishedLoading: boolean;
   favorite_covers: { [key: string]: Cover }
 };
 
@@ -12,7 +13,8 @@ const initialState: UserState = {
   steamId: undefined,
   accessToken: undefined,
   includeFamily: undefined,
-  favorite_covers: {}
+  favorite_covers: {},
+  finishedLoading: false,
 };
 
 const userSlice = createSlice({
@@ -25,7 +27,7 @@ const userSlice = createSlice({
     setAccessToken: (state, action: PayloadAction<string | undefined>) => {
       state.accessToken = action.payload;
     },
-    setIncludeFamily: (state, action: PayloadAction<boolean>) => {
+    setIncludeFamily: (state, action: PayloadAction<boolean | undefined>) => {
       state.includeFamily = action.payload;
     },
     resetUser: () => initialState,
@@ -37,10 +39,13 @@ const userSlice = createSlice({
       } else {
         state.favorite_covers[gameUuid] = cover;
       }
+    },
+    setFinishedLoading: (state, action: PayloadAction<boolean>) => {
+      state.finishedLoading = action.payload;
     }
   }
 });
 
-export const { setSteamId, setAccessToken, setIncludeFamily, resetUser, setFavoriteCovers } =
+export const { setSteamId, setAccessToken, setIncludeFamily, resetUser, setFavoriteCovers, setFinishedLoading } =
   userSlice.actions;
 export default userSlice.reducer;

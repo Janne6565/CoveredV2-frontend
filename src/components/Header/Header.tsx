@@ -5,9 +5,10 @@ import gsap from "gsap";
 
 interface HeaderProps {
   logoDelay?: number;
+  small?: boolean;
 }
 
-export const Header = ({ logoDelay = 0.5 }: HeaderProps) => {
+export const Header = ({ logoDelay = 0.5, small }: HeaderProps) => {
   const logoRef = useRef<HTMLImageElement>(null);
 
   useGSAP(() => {
@@ -19,11 +20,15 @@ export const Header = ({ logoDelay = 0.5 }: HeaderProps) => {
   }, [logoDelay]);
 
   return (
-    <img
-      ref={logoRef}
-      alt="Logo"
-      className="w-48"
-      src={logo}
-    />
+    <div
+      className={(small ? "h-50 " : "h-70") + " transition-all duration-800 delay-500"}
+    >
+      <img
+        ref={logoRef}
+        alt="Logo"
+        className={"h-full w-auto"}
+        src={logo}
+      />
+    </div>
   );
 };
