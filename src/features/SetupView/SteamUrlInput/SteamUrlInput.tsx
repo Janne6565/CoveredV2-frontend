@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useMediaQuery } from "@/hooks/useMediaQuery.tsx";
+import { useMediaQuery } from "@/hooks/useMediaQuery.ts";
 import Link from "@/components/ui/Link.tsx";
 import HelpModal from "@/features/SetupView/SteamUrlInput/HelpModal/HelpModal.tsx";
 

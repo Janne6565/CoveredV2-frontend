@@ -14,16 +14,17 @@ const gamesSlice = createSlice({
   initialState,
   reducers: {
     setGames: (state, action: PayloadAction<Game[]>) => {
+      state.games = {};
       state.games = action.payload.reduce((acc, game) => {
-        return { [game.uuid]: game, ...acc };
+        return { [game.game.uuid]: game, ...acc };
       }, {} as { [key: string]: Game });
     },
     addGame: (state, action: PayloadAction<Game>) => {
-      state.games[action.payload.uuid] = action.payload;
-    },
+      state.games[action.payload.game.uuid] = action.payload;
+    }
   }
 });
 
-export const {setGames, addGame} =
+export const { setGames, addGame } =
   gamesSlice.actions;
 export default gamesSlice.reducer;

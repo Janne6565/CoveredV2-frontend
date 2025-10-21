@@ -97,16 +97,19 @@ const FamilySharedGamesSelection = (props: { visible: boolean }) => {
           Do you want to include family shared games?
         </p>
 
-        <ClickableBox disable={!props.visible} onClick={() => {
-          dispatch(setIncludeFamily(true));
-        }}>
+        <ClickableBox
+          onClick={() => dispatch(setIncludeFamily(true))}
+          disable={!props.visible || userSetup.includeFamily !== undefined}
+        >
           Yes
           <p className={"text-gray-600 text-sm w-[300px]"}>
             Only works if you have a family shared account and requires additional authentication
           </p>
         </ClickableBox>
         <Separator />
-        <ClickableBox onClick={() => dispatch(setIncludeFamily(false))} disable={!props.visible}>
+        <ClickableBox
+          onClick={() => dispatch(setIncludeFamily(false))}
+          disable={!props.visible || userSetup.includeFamily !== undefined}>
           No
         </ClickableBox>
       </div>

@@ -6,6 +6,8 @@ import { useAppDispatch, useAppSelector } from "@/store/store.ts";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip.tsx";
 import Link from "@/components/ui/Link.tsx";
 import { setAccessToken, setIncludeFamily, setSteamId } from "@/store/slices/userSetupSlice.ts";
+import { setCovers } from "@/store/slices/coversSlice.ts";
+import { setGames } from "@/store/slices/gamesSlice.ts";
 
 interface HeroProps {
   title: string;
@@ -59,9 +61,11 @@ export const HeroSection = ({ title, subtitle, tagline }: HeroProps) => {
         {tagline}
       </h5>
 
-      <div className={"transition-all duration-400 " + (steamId ? "h-[50px]" : "h-[0px]")}>
+      <div
+        tabIndex={-1}
+        className={"transition-[height] text-center duration-400 overflow-y-hidden " + (steamId ? "h-[50px]" : "h-[0px]")}>
         <Tooltip>
-          <TooltipTrigger tabIndex={-1}>
+          <TooltipTrigger tabIndex={steamId ? 0 : -1}>
             <h5
               className={"text-m text-secondary/90 font-thin p-0 !select-text cursor-text transition-opacity duration-300 italic " + (steamId ? "opacity-100" : "opacity-0 select-none pointer-events-none")}>
               {steamIdMirror ?? ""}
@@ -71,13 +75,29 @@ export const HeroSection = ({ title, subtitle, tagline }: HeroProps) => {
             Your Steam ID
           </TooltipContent>
         </Tooltip>
-        <Link
-          className={"text-m !text-gray-600 font-thin p-0 !select-text cursor-pointer transition-opacity duration-300 block " + (steamId ? "opacity-100" : "opacity-0 select-none pointer-events-none")}
-          onClick={() => {
-            dispatch(setSteamId(undefined));
-            dispatch(setIncludeFamily(undefined));
-            dispatch(setAccessToken(undefined));
-          }}>Logout</Link>
+        <div
+          className={"flex gap-1 items-center justify-center transition-opacity duration-300 " + (steamId ? "opacity-100" : "opacity-0 select-none pointer-events-none")}>
+          <Link
+            enableTab={steamId !== undefined}
+            className={"text-m w-fit !text-gray-600 font-thin p-0 !select-text cursor-pointer transition-opacity duration-300 block"}
+            onClick={() => {
+              dispatch(setSteamId(undefined));
+              dispatch(setIncludeFamily(undefined));
+              dispatch(setAccessToken(undefined));
+              dispatch(setGames([]));
+              dispatch(setCovers([]));
+            }}>Logout</Link>
+          <span className={"text-gray-800 px-3"}>
+            -
+          </span>
+          <Link
+            enableTab={steamId !== undefined}
+            className={"text-m w-fit !text-gray-600 font-thin p-0 !select-text cursor-pointer transition-opacity duration-300 block"}
+            onClick={() => {
+              dispatch(setGames([]));
+              dispatch(setCovers([]));
+            }}>Reload Data</Link>
+        </div>
       </div>
 
     </div>

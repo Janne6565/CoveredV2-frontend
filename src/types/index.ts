@@ -21,6 +21,13 @@ export interface Cover {
   style?: CoverStyle;
   width: number;
   height: number;
+  author: Author;
+}
+
+export interface Author {
+  name: string;
+  steam64: string;
+  avatar: string;
 }
 
 export type CoverStyle = "alternate" | "white_logo" | "no_logo" | "material" | "blurred";

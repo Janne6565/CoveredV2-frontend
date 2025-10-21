@@ -127,7 +127,7 @@ const SetupView = (props: { visible: boolean }) => {
           shiny={!isButtonDisabled}
           disabled={isButtonDisabled}
           tooltip={getTooltipText()}
-          tabIndex={steamId == undefined ? 0 : -1}
+          tabIndex={steamId == undefined && props.visible ? 0 : -1}
         >
           {!wasButtonClicked ? "Get Started" : !isLoading ? "Continue" : "Loading"}
         </Button>

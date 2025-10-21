@@ -6,8 +6,10 @@ interface ProgressiveImageProps extends React.ImgHTMLAttributes<HTMLImageElement
   alt: string;
   className?: string;
   skeletonClassName?: string;
+  rounded?: boolean;
   transitionDuration?: number; // ms for fade-in/out transitions (default: 500)
   placeholderFadeDuration?: number; // how long to keep placeholder after first image (default: 1000)
+  placeholderText?: string | React.ReactNode;
 }
 
 const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
@@ -15,13 +17,16 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
                                                              alt,
                                                              className,
                                                              skeletonClassName,
+                                                             rounded = true,
                                                              transitionDuration = 200,
                                                              placeholderFadeDuration = 0,
+                                                             placeholderText,
                                                              ...props
                                                            }) => {
   const [currentSrc, setCurrentSrc] = useState<string | null>(null);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [showPlaceholder, setShowPlaceholder] = useState(true);
+  const [error, setError] = useState(false);
   const srcList = useMemo(() => Array.isArray(src) ? src : [src], [src]);
 
   useEffect(() => {
@@ -33,6 +38,10 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
       img.onload = () => {
         setLoadedImages((prev) => new Set(prev).add(src));
       };
+      img.onerror = () => {
+        setError(true);
+      }
+      ;
     });
   }, [srcList]);
 
@@ -60,7 +69,7 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
         <img
           src={currentSrc}
           alt={alt}
-          className={`absolute inset-0 w-full h-full object-cover rounded-xl transition-opacity duration-${transitionDuration} ease-in-out ${
+          className={`absolute inset-0 w-full h-full object-cover ${rounded ? "rounded-xl" : ""} transition-opacity duration-${transitionDuration} ease-in-out ${
             showPlaceholder ? "opacity-0" : "opacity-100"
           } ${className ?? ""}`}
           {...props}
@@ -73,9 +82,16 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
         <div
           className={`absolute inset-0 transition-opacity duration-${transitionDuration} ease-in-out pointer-events-none ${
             currentSrc ? "opacity-100" : "opacity-100"
-          }`}
+          } ${rounded ? "rounded-xl" : ""}`}
         >
-          <Skeleton className={skeletonClassName ?? "w-full h-full rounded-xl"} />
+          <Skeleton
+            className={skeletonClassName ?? "w-full h-full flex items-center justify-center " + (rounded ? "rounded-xl" : "rounded-none")}
+            disableAnimation={error}
+          >
+            {placeholderText &&
+              <div
+                className="flex items-center justify-center h-full w-full text-gray-400 text-center">{placeholderText}</div>}
+          </Skeleton>
         </div>
       )}
     </div>

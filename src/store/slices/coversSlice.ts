@@ -14,6 +14,7 @@ const coversSlice = createSlice({
   initialState,
   reducers: {
     setCovers: (state, action: PayloadAction<Cover[]>) => {
+      state.coversForGame = {};
       state.coversForGame = action.payload.reduce((acc, cover) => {
         if (!acc[cover.game_uuid]) {
           acc[cover.game_uuid] = {};

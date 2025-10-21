@@ -21,9 +21,8 @@ function App() {
       });
       gsap.to("#gameView", {
         opacity: 1,
-        duration: 0.4,
-        ease: "power2.in",
-        minHeight: "100%",
+        duration: 0.8,
+        minHeight: "calc(95vh - 580px)",
         pointerEvents: "auto",
         zIndex: 99
       });
@@ -49,7 +48,10 @@ function App() {
         <div id={"setupView"}>
           <SetupView visible={setupState == "incomplete"} />
         </div>
-        <div id={"gameView"} className={"opacity-0 pointer-events-none"}>
+        <div
+          id={"gameView"}
+          className={"opacity-0 pointer-events-none flex justify-center items-start min-h-[calc(95vh - 580px)]"}
+        >
           <GameView visible={setupState == "complete"} />
         </div>
       </Layout>

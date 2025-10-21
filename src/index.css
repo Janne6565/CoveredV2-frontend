@@ -57,6 +57,7 @@
     --color-sidebar-ring: var(--sidebar-ring);
     --color-scrollbar-thumb: oklch(0.411 0.0141 253.14);
     --color-link: oklch(0.519 0.088 255.993);
+    --tw-shadow-color: oklch(0.22 0.03 255);
 }
 
 :root {
@@ -106,6 +107,7 @@
     --sidebar-accent-foreground: oklch(0.9 0.01 250);
     --sidebar-border: oklch(0.25 0.02 250 / 0.3);
     --sidebar-ring: oklch(0.65 0.1 240);
+    --tw-shadow-color: oklch(0.22 0.03 255);
 }
 
 @layer base {
@@ -149,4 +151,11 @@ input[type="number"] {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.glow {
+    box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.2) !important;
+}
+
+.possible-glow {
 }
