@@ -42,10 +42,13 @@ const userSlice = createSlice({
     },
     setFinishedLoading: (state, action: PayloadAction<boolean>) => {
       state.finishedLoading = action.payload;
+    },
+    clearFavorites: (state) => {
+      state.favorite_covers = {};
     }
   }
 });
 
-export const { setSteamId, setAccessToken, setIncludeFamily, resetUser, setFavoriteCover, setFinishedLoading } =
+export const { setSteamId, setAccessToken, setIncludeFamily, resetUser, setFavoriteCover, setFinishedLoading, clearFavorites } =
   userSlice.actions;
 export default userSlice.reducer;

@@ -233,7 +233,11 @@ const ExportModal = () => {
               >
                 {steamPath}
                 <div
-                  className="absolute none text-gray-400 group-hover:text-gray-300 text-[15px] w-[100%] h-[100%] left-0 top-0 flex items-center justify-center"
+                  className="absolute none text-xl text-black font-bold text-[15px] w-[100%] h-[100%] left-0 top-0 flex items-center justify-center"
+                  style={{
+                    backdropFilter: "blur(2.5px)",
+                    opacity: copied ? 1 : 0
+                  }}
                 >
                   {copied && "✓ Copied!"}
                 </div>

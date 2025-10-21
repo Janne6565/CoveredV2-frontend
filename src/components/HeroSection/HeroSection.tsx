@@ -5,7 +5,12 @@ import gsap from "gsap";
 import { useAppDispatch, useAppSelector } from "@/store/store.ts";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip.tsx";
 import Link from "@/components/ui/Link.tsx";
-import { setAccessToken, setIncludeFamily, setSteamId } from "@/store/slices/userSetupSlice.ts";
+import {
+  clearFavorites,
+  setAccessToken,
+  setIncludeFamily,
+  setSteamId
+} from "@/store/slices/userSetupSlice.ts";
 import { setCovers } from "@/store/slices/coversSlice.ts";
 import { setGames } from "@/store/slices/gamesSlice.ts";
 
@@ -81,11 +86,12 @@ export const HeroSection = ({ title, subtitle, tagline }: HeroProps) => {
             enableTab={steamId !== undefined}
             className={"text-m w-fit !text-gray-600 font-thin p-0 !select-text cursor-pointer transition-opacity duration-300 block"}
             onClick={() => {
-              dispatch(setSteamId(undefined));
-              dispatch(setIncludeFamily(undefined));
-              dispatch(setAccessToken(undefined));
               dispatch(setGames([]));
               dispatch(setCovers([]));
+              dispatch(setSteamId(undefined));
+              dispatch(setIncludeFamily(undefined));
+              dispatch(clearFavorites());
+              dispatch(setAccessToken(undefined));
             }}>Logout</Link>
           <span className={"text-gray-800 px-3"}>
             -
