@@ -51,6 +51,7 @@ const ImageCard = ({
       <TooltipTrigger
         onClick={onClick}
         onKeyDown={(e) => onclick && (e.key == "enter" || e.key == "space") ? onClick!() : null}
+        className={"h-fit m-auto"}
       >
         <div
           ref={propRef ?? ref}

@@ -18,7 +18,7 @@ export const Layout = ({ children, mode }: LayoutProps) => {
     >
       <div className="flex flex-col items-center justify-center h-fit px-4 max-w-full">
         <div
-          className="flex flex-col md:flex-row gap-y-5 md:gap-y-0 items-center justify-center text-center space-x-5 max-w-full py-[100px] pb-[30px]">
+          className="flex flex-col md:flex-row gap-y-5 md:gap-y-0 items-center justify-center text-center space-x-5 max-w-full py-[30px] lg:pt-[100px]">
           <Header small={mode == "small"} />
 
           <HeroSection
@@ -31,8 +31,8 @@ export const Layout = ({ children, mode }: LayoutProps) => {
         <div className={"relative hidden lg:block"}>
           {children}
         </div>
-        <div className={"relative lg:hidden text-gray-500 text-xl py-[100px]"}>
-          This feature is not available on mobile devices.
+        <div className={"relative lg:hidden text-gray-500 text-xl py-[50px] pb-[100px] text-center w-[70%]"}>
+          This app is not available on mobile devices.
         </div>
       </div>
     </div>

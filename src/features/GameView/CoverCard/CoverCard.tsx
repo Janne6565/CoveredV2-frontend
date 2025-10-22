@@ -35,7 +35,7 @@ const CoverCard = ({ game, cover, favoriteCoverUuid }: { game: Game, cover: Cove
     altText={cover.author.name}
     className={"transition-all border-2 !rounded-none possible-glow"}
     style={{
-      boxShadow: "0 0 10px 5px rgba(15, 50, 94, 0)"
+      boxShadow: "0 0 10px 5px rgba(15, 50, 94, 0)",
     }}
     onClick={() => {
       dispatch(setFavoriteCover({ gameUuid: game.game.uuid, cover }));

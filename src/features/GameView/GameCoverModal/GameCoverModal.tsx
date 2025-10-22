@@ -14,7 +14,7 @@ const GameCoverModal = ({ game, closeModalCallback }: { game: Game | null, close
       : [],
     [allCovers, game]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(8);
   const currentPageCovers = useMemo(() => arrayCovers.slice((currentPage - 1) * pageSize, currentPage * pageSize), [currentPage, arrayCovers, pageSize]);
   const maxPage = Math.ceil(arrayCovers.length / pageSize) || 1;
   useEffect(() => {
@@ -23,15 +23,15 @@ const GameCoverModal = ({ game, closeModalCallback }: { game: Game | null, close
 
   return (
     <Dialog open={!!game} onOpenChange={closeModalCallback}>
-      <DialogContent className="!w-[1100px] !max-w-[60vw] !max-h-[95vh] !overflow-y-auto">
+      <DialogContent className="!w-[1100px] !h-[1200px] !max-w-[60vw] !max-h-[95vh] !overflow-y-auto flex flex-col">
         <DialogTitle style={{ display: "none" }}>{game?.game.name}</DialogTitle>
         <DialogHeader>Covers for {game?.game.name}</DialogHeader>
-        <div>
+        <div className="flex flex-col space-between grow-1">
           <PageControl currentPage={currentPage} maxPage={maxPage} itemsPerPage={pageSize}
                        totalItems={arrayCovers.length}
                        onPageChange={setCurrentPage} onItemsPerPageChange={setPageSize} className={"!w-[700px] py-5"}
-                       itemsPerPageOptions={[12, 24, 36, 48]} />
-          <div className={"flex flex-row flex-wrap gap-3 justify-evenly gap-y-10 m-auto w-[80%] py-5"}>
+                       itemsPerPageOptions={[8, 12, 24, 36, 48]} />
+          <div className={"flex flex-row flex-wrap gap-3 justify-evenly gap-y-10 m-auto w-[80%] py-5 grow-1"}>
             {game &&
               currentPageCovers.map((cover) => <CoverCard game={game} cover={cover} key={cover.uuid}
                                                           favoriteCoverUuid={favoriteCoverUuid} />)
@@ -40,7 +40,7 @@ const GameCoverModal = ({ game, closeModalCallback }: { game: Game | null, close
           <PageControl currentPage={currentPage} maxPage={maxPage} itemsPerPage={pageSize}
                        totalItems={arrayCovers.length}
                        onPageChange={setCurrentPage} onItemsPerPageChange={setPageSize} className={"!w-[700px] py-5"}
-                       itemsPerPageOptions={[12, 24, 36, 48]} />
+                       itemsPerPageOptions={[8, 12, 24, 36, 48]} />
         </div>
       </DialogContent>
     </Dialog>

@@ -1,0 +1,17 @@
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - covered.jannekeipert.de
+      secretName: multi-domain-cert   # <- the secret cert-manager created
+  rules:
+    - host: covered.jannekeipert.de
+      http:
+        paths:
+          - backend:
+              service:
+                name: covered-frontend-service
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix

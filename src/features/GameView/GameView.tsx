@@ -99,7 +99,7 @@ const GameView = (props: { visible: boolean }) => {
     },
     enabled: props.visible && Object.keys(games).length === 0,
     retry: true,
-    retryDelay: 20
+    retryDelay: 200
   });
 
   const { isLoading: isCoversLoading } = useQuery({
@@ -110,7 +110,7 @@ const GameView = (props: { visible: boolean }) => {
       return covers;
     },
     enabled: props.visible && Object.keys(games).length > 0 && Object.keys(covers).length === 0,
-    retry: true
+    retry: true,
   });
 
   return <div className={"min-w-[60%] flex flex-col gap-6"}>
@@ -119,6 +119,7 @@ const GameView = (props: { visible: boolean }) => {
         <ProgressAnimation
           progress={(missingGames !== null && totalGames !== null) ? ((totalGames - missingGames) / totalGames) * 100 : 0} />
         <span className={"text-gray-400"}>Loading your Games...</span>
+        <span className={"text-gray-600"}>You can leave or reload this page</span>
       </div>
     ) : (
       <>
