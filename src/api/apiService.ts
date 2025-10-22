@@ -23,4 +23,15 @@ const exportCovers = async (coverUuids: string[]) => {
   });
 };
 
-export { loadSteamId, loadGamesFromFamily, loadGamesFromPlayer, fetchCoversFromGames, exportCovers };
+const loadSteamNameFromId = async (steamId: string) => {
+  return (await apiClient.get("/util/steam/username/" + steamId)).data as string;
+};
+
+export {
+  loadSteamId,
+  loadGamesFromFamily,
+  loadGamesFromPlayer,
+  fetchCoversFromGames,
+  exportCovers,
+  loadSteamNameFromId
+};

@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { useCallback, useRef, useState } from "react";
 import { SteamUrlInput } from "@/features/SetupView/SteamUrlInput/SteamUrlInput.tsx";
 import { useQuery } from "@tanstack/react-query";
-import { loadSteamId } from "@/api/apiService.ts";
+import { loadSteamId, loadSteamNameFromId } from "@/api/apiService.ts";
 import { useDispatch } from "react-redux";
-import { setSteamId } from "@/store/slices/userSetupSlice.ts";
+import { setSteamId, setSteamName } from "@/store/slices/userSetupSlice.ts";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useAppSelector } from "@/store/store.ts";
@@ -16,7 +16,7 @@ const buttonToAnimation = { opacity: 1, delay: 1.3 };
 const SetupView = (props: { visible: boolean }) => {
   const container = useRef<HTMLDivElement>(null);
   const storedSteamId = useAppSelector((state) => state.user.steamId);
-  const [wasButtonClicked, setWasButtonClicked] = useState(false);
+  const [buttonClickCount, setButtonClickCount] = useState(0);
   const [steamProfileUrl, setSteamProfileUrl] = useState("");
   const dispatch = useDispatch();
   const { data: steamId, isLoading, error } = useQuery({
@@ -35,30 +35,34 @@ const SetupView = (props: { visible: boolean }) => {
       throw new Error("Invalid Steam Profile URL");
     },
     retry: false,
-    enabled: wasButtonClicked && steamProfileUrl.length > 0,
+    enabled: buttonClickCount === 1 && steamProfileUrl.length > 0,
     gcTime: 0
   });
 
-  const handleButtonClick = useCallback(() => {
-    if (!wasButtonClicked) {
-      setWasButtonClicked(true);
+  const handleButtonClick = useCallback(async () => {
+    if (buttonClickCount === 0) {
+      setButtonClickCount(1);
       return;
     }
     if (isLoading) return;
+    setButtonClickCount(2);
+    dispatch(setSteamName(await loadSteamNameFromId(steamId ?? "")));
     dispatch(setSteamId(steamId));
-  }, [wasButtonClicked, isLoading, steamId, dispatch]);
+  }, [buttonClickCount, isLoading, steamId, dispatch]);
 
   const isSteamProfileUrlValid = steamProfileUrl.startsWith("https://steamcommunity.com/id") || steamProfileUrl.startsWith("https://steamcommunity.com/profiles");
-  const isButtonDisabled = wasButtonClicked && (!!error || isLoading || !isSteamProfileUrlValid);
+  const isButtonDisabled = buttonClickCount >= 1 && (!!error || isLoading || !isSteamProfileUrlValid);
 
   const getTooltipText = () => {
-    if (!wasButtonClicked) return "Get yourself Covered";
+    if (!buttonClickCount) return "Get yourself Covered";
     if (!isSteamProfileUrlValid) return "Please enter a valid Steam Profile URL";
     if (isLoading) return ("Resolving Steam ID...");
     return "";
   };
 
   useGSAP(() => {
+    gsap.killTweensOf([".family-shared-games-selection-container", ".steam-id-input-container"]);
+
     if (!props.visible) {
       gsap.to(".family-shared-games-selection-container",
         { pointerEvents: "none" });
@@ -85,7 +89,7 @@ const SetupView = (props: { visible: boolean }) => {
           ease: "power2.out",
           delay: 0.5
         });
-      setWasButtonClicked(true);
+      setButtonClickCount(2);
     } else {
       gsap.to(".family-shared-games-selection-container",
         {
@@ -104,6 +108,7 @@ const SetupView = (props: { visible: boolean }) => {
           ease: "power2.out",
           delay: 0.6
         });
+      setButtonClickCount(0);
     }
   }, { scope: container, dependencies: [storedSteamId, props.visible] });
 
@@ -114,7 +119,7 @@ const SetupView = (props: { visible: boolean }) => {
         className={"flex items-center mt-5 content-center align-middle flex-col gap-2 lg:gap-0 lg:flex-row steam-id-input-container absolute translate-x-[-50%] left-[50%] " + (!props.visible && "pointer-events-none")}>
         <SteamUrlInput
           onChange={setSteamProfileUrl}
-          isVisible={wasButtonClicked && storedSteamId == undefined}
+          isVisible={buttonClickCount == 1 && storedSteamId == undefined}
           error={error ? "Invalid Steam Profile URL" : undefined}
           submitCallback={handleButtonClick}
         />
@@ -128,7 +133,7 @@ const SetupView = (props: { visible: boolean }) => {
           tooltip={getTooltipText()}
           tabIndex={steamId == undefined && props.visible ? 0 : -1}
         >
-          {!wasButtonClicked ? "Get Started" : !isLoading ? "Continue" : "Loading"}
+          {!buttonClickCount ? "Get Started" : !isLoading ? "Continue" : "Loading"}
         </Button>
       </div>
       <div

@@ -31,7 +31,7 @@ const GameCoverModal = ({ game, closeModalCallback }: { game: Game | null, close
                        totalItems={arrayCovers.length}
                        onPageChange={setCurrentPage} onItemsPerPageChange={setPageSize} className={"!w-[700px] py-5"}
                        itemsPerPageOptions={[8, 12, 24, 36, 48]} />
-          <div className={"flex flex-row flex-wrap gap-3 justify-evenly gap-y-10 m-auto w-[80%] py-5 grow-1"}>
+          <div className={"flex flex-row flex-wrap gap-3 justify-evenly content-start gap-y-10 m-auto w-[80%] py-5 grow-1"}>
             {game &&
               currentPageCovers.map((cover) => <CoverCard game={game} cover={cover} key={cover.uuid}
                                                           favoriteCoverUuid={favoriteCoverUuid} />)

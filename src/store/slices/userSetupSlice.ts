@@ -1,11 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Cover } from "@/types";
 
-type UserState = {
+export type UserState = {
   steamId: string | undefined;
   accessToken: string | undefined;
   includeFamily: boolean | undefined;
   finishedLoading: boolean;
+  steamName: string | undefined;
   favorite_covers: { [key: string]: Cover }
 };
 
@@ -14,7 +15,8 @@ const initialState: UserState = {
   accessToken: undefined,
   includeFamily: undefined,
   favorite_covers: {},
-  finishedLoading: false
+  finishedLoading: false,
+  steamName: undefined
 };
 
 const userSlice = createSlice({
@@ -45,6 +47,9 @@ const userSlice = createSlice({
     },
     clearFavorites: (state) => {
       state.favorite_covers = {};
+    },
+    setSteamName: (state, action: PayloadAction<string | undefined>) => {
+      state.steamName = action.payload;
     }
   }
 });
@@ -56,6 +61,7 @@ export const {
   resetUser,
   setFavoriteCover,
   setFinishedLoading,
+  setSteamName,
   clearFavorites
 } =
   userSlice.actions;

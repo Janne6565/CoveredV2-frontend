@@ -100,8 +100,7 @@ const GameView = (props: { visible: boolean }) => {
     enabled: props.visible && Object.keys(games).length === 0,
     retry: true,
     retryDelay: 200,
-    refetchOnReconnect: true,
-    refetchOnWindowFocus: true
+    refetchIntervalInBackground: true
   });
 
   const { isLoading: isCoversLoading } = useQuery({
