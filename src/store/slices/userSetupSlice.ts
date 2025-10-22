@@ -14,7 +14,7 @@ const initialState: UserState = {
   accessToken: undefined,
   includeFamily: undefined,
   favorite_covers: {},
-  finishedLoading: false,
+  finishedLoading: false
 };
 
 const userSlice = createSlice({
@@ -22,6 +22,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setSteamId: (state, action: PayloadAction<string | undefined>) => {
+      console.log("setSteamId", action.payload);
       state.steamId = action.payload;
     },
     setAccessToken: (state, action: PayloadAction<string | undefined>) => {
@@ -49,6 +50,14 @@ const userSlice = createSlice({
   }
 });
 
-export const { setSteamId, setAccessToken, setIncludeFamily, resetUser, setFavoriteCover, setFinishedLoading, clearFavorites } =
+export const {
+  setSteamId,
+  setAccessToken,
+  setIncludeFamily,
+  resetUser,
+  setFavoriteCover,
+  setFinishedLoading,
+  clearFavorites
+} =
   userSlice.actions;
 export default userSlice.reducer;

@@ -6,16 +6,22 @@ import { type ReactNode, useState } from "react";
 import ProgressiveImage from "@/components/ui/ProgressiveImage.tsx";
 import ImageModal from "@/components/ImageModal/ImageModal.tsx";
 import { Kbd } from "@/components/ui/kbd.tsx";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip.tsx";
 
 const Text = (props: { children: ReactNode, className?: string }) => {
   return <p className={"text-sm text-gray-300 mt-4 pb-1 " + props.className}>{props.children}</p>;
 };
 
 const Image = (props: { src: string, alt: string, openFullScreenModal: (src: string, alt: string) => void }) => {
-  return <div className="aspect-video">
-    <ProgressiveImage srcList={[props.src]} alt={props.alt} className="w-full rounded-md cursor-pointer"
-                      onClick={() => props.openFullScreenModal(props.src, props.alt)} />
-  </div>;
+  return <Tooltip>
+    <TooltipTrigger asChild>
+      <div className="aspect-video">
+        <ProgressiveImage srcList={[props.src]} alt={props.alt} className="w-full rounded-md cursor-pointer"
+                          onClick={() => props.openFullScreenModal(props.src, props.alt)} />
+      </div>
+    </TooltipTrigger>
+    <TooltipContent>Click on the image to expand</TooltipContent>
+  </Tooltip>;
 };
 
 const HelpModal = (props: { isOpen: boolean, setOpen: (newOpen: boolean) => void }) => {

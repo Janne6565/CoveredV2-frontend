@@ -8,8 +8,7 @@ import { setSteamId } from "@/store/slices/userSetupSlice.ts";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useAppSelector } from "@/store/store.ts";
-import FamilySharedGamesSelection
-  from "@/features/SetupView/FamilySharedGamesSelection/FamilySharedGamesSelection.tsx";
+import FamilySharedGamesSelection from "@/features/SetupView/FamilySharedGamesSelection/FamilySharedGamesSelection.tsx";
 
 const buttonFromAnimation = { opacity: 0 };
 const buttonToAnimation = { opacity: 1, delay: 1.3 };
@@ -30,14 +29,14 @@ const SetupView = (props: { visible: boolean }) => {
         }
       }
       if (steamProfileUrl.includes("https://steamcommunity.com/id/")) {
-        console.log("steamProfileUrl", steamProfileUrl);
         const lastSplit = steamProfileUrl.split("id/").pop() ?? "";
-        return await loadSteamId(lastSplit.replace("/", ""));
+        return (await loadSteamId(lastSplit.replace("/", ""))).steamid;
       }
       throw new Error("Invalid Steam Profile URL");
     },
     retry: false,
-    enabled: wasButtonClicked && steamProfileUrl.length > 0
+    enabled: wasButtonClicked && steamProfileUrl.length > 0,
+    gcTime: 0
   });
 
   const handleButtonClick = useCallback(() => {
@@ -47,7 +46,7 @@ const SetupView = (props: { visible: boolean }) => {
     }
     if (isLoading) return;
     dispatch(setSteamId(steamId));
-  }, [wasButtonClicked, steamProfileUrl, steamId]);
+  }, [wasButtonClicked, isLoading, steamId, dispatch]);
 
   const isSteamProfileUrlValid = steamProfileUrl.startsWith("https://steamcommunity.com/id") || steamProfileUrl.startsWith("https://steamcommunity.com/profiles");
   const isButtonDisabled = wasButtonClicked && (!!error || isLoading || !isSteamProfileUrlValid);

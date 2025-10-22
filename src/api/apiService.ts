@@ -2,7 +2,7 @@ import apiClient from "@/api/apiClient.ts";
 import type { Cover, Game } from "@/types";
 
 const loadSteamId = async (vanityUrl: string) => {
-  return (await apiClient.get("/util/steam/resolve-vanity-url/" + vanityUrl)).data;
+  return (await apiClient.get("/util/steam/resolve-vanity-url/" + vanityUrl)).data as { steamid: string };
 };
 
 const loadGamesFromFamily = async (steamId: string, accessToken: string) => {
@@ -19,7 +19,7 @@ const fetchCoversFromGames = async (gameUuids: string[]) => {
 
 const exportCovers = async (coverUuids: string[]) => {
   return await apiClient.post("/covers/export", coverUuids, {
-    responseType: "blob",
+    responseType: "blob"
   });
 };
 
