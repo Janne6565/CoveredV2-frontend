@@ -9,7 +9,7 @@ export function normalizePlaytime(playtime: number) {
 	const hours = Math.floor(playtime / 60);
 	const minutes = playtime % 60;
 	const days = Math.floor(hours / 24);
-	return `${days > 1 ? days + " Days " : days == 1 ? " 1 Day " : ""}${(hours % 24).toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}h`;
+	return `${days > 1 ? days + " Days " : days === 1 ? " 1 Day " : ""}${(hours % 24).toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}h`;
 }
 
 export function normalizeTimeToMinutes(seconds: number) {
