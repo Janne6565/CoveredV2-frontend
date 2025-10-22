@@ -10,11 +10,17 @@ import gsap from "gsap";
 const CoverCard = ({
                      game,
                      cover,
-                     favoriteCoverUuid
+                     favoriteCoverUuid,
+                     className,
+                     onClick,
+                     disableClick = false
                    }: {
   game: Game;
   cover: Cover;
   favoriteCoverUuid?: string;
+  className?: string;
+  disableClick?: boolean;
+  onClick?: () => void;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isFavorite = favoriteCoverUuid === cover.uuid;
@@ -45,11 +51,17 @@ const CoverCard = ({
       ref={ref as RefObject<HTMLDivElement>}
       coverUrl={[cover.thumb, cover.url]}
       altText={cover.author.name}
-      className={"transition-all border-2 !rounded-none possible-glow"}
+      className={`transition-all border-2 possible-glow ${className}`}
       style={{
         boxShadow: "0 0 10px 5px rgba(15, 50, 94, 0)"
       }}
+      disableAnimation={disableClick}
       onClick={() => {
+        if (onClick) {
+          onClick();
+          return;
+        }
+        if (disableClick) return;
         dispatch(setFavoriteCover({ gameUuid: game.game.uuid, cover }));
       }}
       altComponent={

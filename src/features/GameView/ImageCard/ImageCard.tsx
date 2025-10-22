@@ -14,6 +14,7 @@ const ImageCard = ({
                      ref: propRef,
                      style,
                      className,
+                     disableAnimation = false
                    }: {
   coverUrl: string | string[];
   onClick?: () => void;
@@ -22,6 +23,7 @@ const ImageCard = ({
   className?: string;
   style?: React.CSSProperties;
   ref?: React.RefObject<HTMLDivElement>;
+  disableAnimation?: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState<string>(
@@ -29,6 +31,7 @@ const ImageCard = ({
   );
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (disableAnimation) return;
     const rect = propRef
       ? propRef.current?.getBoundingClientRect()
       : ref.current?.getBoundingClientRect();
@@ -59,7 +62,7 @@ const ImageCard = ({
       <TooltipTrigger
         onClick={onClick}
         onKeyDown={(e) =>
-          onclick && (e.key === "enter" || e.key === "space") ? onClick!() : null
+          onClick && (e.key === "enter" || e.key === "space") ? onClick() : null
         }
         className={"h-fit m-auto"}
       >
@@ -68,7 +71,7 @@ const ImageCard = ({
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className={
-            "aspect-[2/3] w-[175px] h-auto cursor-pointer transition-transform duration-150 ease-out hover:scale-105 " +
+            "aspect-[2/3] w-[175px] h-auto transition-transform duration-150 ease-out " + (onClick ? "hover:scale-105 cursor-pointer " : "") +
             className
           }
           style={{
