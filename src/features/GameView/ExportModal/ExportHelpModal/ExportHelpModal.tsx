@@ -5,13 +5,18 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import ProgressiveImage from "@/components/ui/ProgressiveImage.tsx";
 import { useState } from "react";
 import ImageModal from "@/components/ImageModal/ImageModal.tsx";
-
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip.tsx";
 
 const Image = (props: { src: string, alt: string, openFullScreenModal: (src: string, alt: string) => void }) => {
-  return <div className="aspect-video">
-    <ProgressiveImage srcList={[props.src]} alt={props.alt} className="w-full rounded-md cursor-pointer"
-                      onClick={() => props.openFullScreenModal(props.src, props.alt)} />
-  </div>;
+  return <Tooltip>
+    <TooltipTrigger asChild>
+      <div className="aspect-video">
+        <ProgressiveImage srcList={[props.src]} alt={props.alt} className="w-full rounded-md cursor-pointer"
+                          onClick={() => props.openFullScreenModal(props.src, props.alt)} />
+      </div>
+    </TooltipTrigger>
+    <TooltipContent>Click on the image to expand</TooltipContent>
+  </Tooltip>;
 };
 
 interface HelpModalProps {
@@ -72,7 +77,8 @@ const ExportHelpModal = ({ isOpen, onClose }: HelpModalProps) => {
           </div>
         </DialogContent>
       </Dialog>
-      <ImageModal src={openImage ?? ""} open={!!openImage} setOpen={() => setOpenImage(null)} imageAlt={imageAlt ?? ""} />
+      <ImageModal src={openImage ?? ""} open={!!openImage} setOpen={() => setOpenImage(null)}
+                  imageAlt={imageAlt ?? ""} />
     </>);
 };
 

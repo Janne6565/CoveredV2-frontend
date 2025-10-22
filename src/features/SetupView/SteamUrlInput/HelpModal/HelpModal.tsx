@@ -29,7 +29,6 @@ const HelpModal = (props: { isOpen: boolean, setOpen: (newOpen: boolean) => void
   const [openAlt, setOpenAlt] = useState<null | string>(null);
 
   const openFullScreenModal = (src: string, alt: string) => {
-    console.log("open image");
     setOpenImage(src);
     setOpenAlt(alt);
   };
