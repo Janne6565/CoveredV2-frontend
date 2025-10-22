@@ -30,8 +30,9 @@ const HelpModal = (props: { isOpen: boolean, setOpen: (newOpen: boolean) => void
 
   return <>
     <Dialog open={props.isOpen} onOpenChange={props.setOpen}>
-      <DialogContent className="!w-[1000px] !overflow-y-auto !max-w-[65vw] !max-h-[95vh]"
-                     aria-describedby={"help-modal-description"}>
+      <DialogContent
+        className="!w-[1000px] !overflow-y-auto !max-w-[65vw] !max-h-[95vh]"
+      >
         <DialogHeader>
           <DialogTitle>Finding your Steam Profile URL</DialogTitle>
         </DialogHeader>

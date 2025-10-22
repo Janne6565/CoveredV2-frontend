@@ -8,13 +8,13 @@ const ImageModal = (props: {
   imageAlt: string
 }) => {
   return <Dialog open={props.open} onOpenChange={props.setOpen}>
-    <DialogContent className="!w-[1000px] !overflow-y-auto !max-w-[95vw] !max-h-[95vh]">
+    <DialogContent className="!w-[90vw] !overflow-y-hide !max-w-[95vw] !max-h-[95vh]">
       <DialogHeader>
         <DialogTitle>{props.imageAlt}</DialogTitle>
-        <div className="aspect-video w-full h-auto mt-3">
-          <ProgressiveImage srcList={props.src} alt={props.imageAlt} className={"aspect-video"} />
-        </div>
       </DialogHeader>
+      <div className="aspect-video w-[95%] h-auto m-auto">
+        <ProgressiveImage srcList={props.src} alt={props.imageAlt} className={"aspect-video"} />
+      </div>
     </DialogContent>
   </Dialog>;
 };

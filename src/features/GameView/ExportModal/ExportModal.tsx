@@ -4,6 +4,9 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Button } from "@/components/ui/button.tsx";
 import { exportCovers } from "@/api/apiService.ts";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip.tsx";
+import { HelpCircle } from "lucide-react";
+import ExportHelpModal from "@/features/GameView/ExportModal/ExportHelpModal/ExportHelpModal.tsx";
 
 type ExportStep = 1 | 2 | 3;
 
@@ -20,6 +23,8 @@ const ExportModal = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [exportedBlob, setExportedBlob] = useState<Blob | null>(null);
   const [exportedFilename, setExportedFilename] = useState<string>("export.zip");
+  const [helpModalOpen, setHelpModalOpen] = useState(false);
+
   const steamPath = "C:\\Program Files (x86)\\Steam\\appcache\\librarycache";
 
   useEffect(() => {
@@ -45,6 +50,8 @@ const ExportModal = () => {
   }, [open]);
 
   useGSAP(() => {
+    gsap.killTweensOf([ref.current, backgroundRef.current, modalContentRef.current, exportTextRef.current]);
+
     if (open) {
       gsap.to(ref.current!, {
         width: "550px",
@@ -62,8 +69,8 @@ const ExportModal = () => {
       });
       gsap.to(modalContentRef.current!, {
         opacity: 1,
-        duration: 0.4,
-        delay: 0.5,
+        duration: 0.5,
+        delay: 0.6,
         pointerEvents: "auto"
       });
       gsap.to(exportTextRef.current!, {
@@ -79,7 +86,7 @@ const ExportModal = () => {
         right: "15vw",
         position: "fixed",
         translate: "0% 0%",
-        background: "var(--primary) !important",
+        background: (disabled ? "var(--gray-500) !important" : "var(--primary) !important"),
         duration: 0.5
       });
       gsap.to(backgroundRef.current!, {
@@ -97,7 +104,7 @@ const ExportModal = () => {
         pointerEvents: "auto"
       });
     }
-  }, { dependencies: [open] });
+  }, { dependencies: [open, disabled] });
 
   const handleRequestExport = async () => {
     setIsExporting(true);
@@ -167,11 +174,21 @@ const ExportModal = () => {
         transition: open ? "none" : "background ease .3s"
       }}
       tabIndex={disabled || open ? -1 : 0}
-      onClick={() => setOpen(true)}
+      onClick={() => {
+        !disabled && setOpen(true);
+      }}
     >
-      <div ref={exportTextRef} className={"w-full h-full flex items-center justify-center text-white absolute"}>
-        Export {Object.keys(favoriteCovers).length} cover{Object.keys(favoriteCovers).length > 1 ? "s" : ""}
-      </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div ref={exportTextRef}
+               className={"w-full h-full flex items-center justify-center absolute select-none " + (disabled ? "text-gray-500" : "!text-white")}>
+            Export {Object.keys(favoriteCovers).length} cover{Object.keys(favoriteCovers).length > 1 ? "s" : ""}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          {disabled ? ("You need to select at least one favorite cover to export") : ("Export your favorite covers to a ZIP file. Click to export.")}
+        </TooltipContent>
+      </Tooltip>
       <div ref={modalContentRef}
            className={"w-[550px] h-[750px] flex flex-col items-center justify-evenly text-white absolute opacity-0 p-8"}>
         <h2 className="text-2xl font-bold mb-6">Export Your Covers</h2>
@@ -233,7 +250,7 @@ const ExportModal = () => {
               >
                 {steamPath}
                 <div
-                  className="absolute none text-xl text-black font-bold text-[15px] w-[100%] h-[100%] left-0 top-0 flex items-center justify-center"
+                  className="absolute none text-xl text-gray-900 font-bold text-[15px] w-[100%] h-[100%] left-0 top-0 flex items-center justify-center"
                   style={{
                     backdropFilter: "blur(2.5px)",
                     opacity: copied ? 1 : 0
@@ -242,14 +259,25 @@ const ExportModal = () => {
                   {copied && "✓ Copied!"}
                 </div>
               </code>
-              <p className="text-xs text-gray-400 mt-2">
+              <p className="text-xs text-gray-200 mt-2">
                 Open the downloaded ZIP file and extract all contents to the folder above.
               </p>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setHelpModalOpen(true);
+                }}
+                className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-400/80 cursor-pointer transition-colors mt-3"
+              >
+                <HelpCircle className="w-4 h-4" />
+                Need help extracting? Click here for a step-by-step guide
+              </button>
             </div>
           </StepCard>
         </div>
       </div>
     </div>
+    <ExportHelpModal isOpen={helpModalOpen} onClose={() => setHelpModalOpen(false)} />
   </>;
 };
 
