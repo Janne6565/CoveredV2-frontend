@@ -86,7 +86,7 @@ const HelpModal = (props: {
 						</Text>
 						<Text className="text-gray-500 !mt-0">
 							The format can either be: https://steamcommunity.com/id/_jannox/
-							or https://steamcommunity.com/profiles/76561198419165332
+							or https://steamcommunity.com/profiles/76561198803658880
 						</Text>
 						<Image
 							src={image3}

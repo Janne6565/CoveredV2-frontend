@@ -17,7 +17,7 @@ const CoverCard = ({
   favoriteCoverUuid?: string;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isFavorite = favoriteCoverUuid == cover.uuid;
+  const isFavorite = favoriteCoverUuid === cover.uuid;
   const dispatch = useAppDispatch();
 
   useGSAP(
