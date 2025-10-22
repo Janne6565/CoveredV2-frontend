@@ -6,7 +6,7 @@ import { setGames } from "@/store/slices/gamesSlice.ts";
 import { useMemo, useState } from "react";
 import { setCovers } from "@/store/slices/coversSlice.ts";
 import { useCurrentLocation } from "@/hooks/useCurrentLocation.ts";
-import { fuzzyMatchWithScore } from "@/lib/utils.ts";
+import { fuzzyMatchWithScore, normalizeTimeToMinutes } from "@/lib/utils.ts";
 import PageControl from "@/features/GameView/PageControl/PageControl.tsx";
 import GameCard from "@/features/GameView/GameCard/GameCard.tsx";
 import GameCoverModal from "@/features/GameView/GameCoverModal/GameCoverModal.tsx";
@@ -110,7 +110,7 @@ const GameView = (props: { visible: boolean }) => {
       return covers;
     },
     enabled: props.visible && Object.keys(games).length > 0 && Object.keys(covers).length === 0,
-    retry: true,
+    retry: true
   });
 
   return <div className={"min-w-[60%] flex flex-col gap-6"}>
@@ -118,8 +118,13 @@ const GameView = (props: { visible: boolean }) => {
       <div className="flex flex-col items-center justify-center h-[25vh] gap-6">
         <ProgressAnimation
           progress={(missingGames !== null && totalGames !== null) ? ((totalGames - missingGames) / totalGames) * 100 : 0} />
-        <span className={"text-gray-400"}>Loading your Games...</span>
-        <span className={"text-gray-600"}>You can leave or reload this page</span>
+        <span
+          className={"text-gray-400 text-center"}
+        >
+          Loading your Games... ({totalGames !== null && missingGames !== null ? totalGames - missingGames : "-"}/{totalGames}) <br />
+          Approximate time remaining: {missingGames !== null ? normalizeTimeToMinutes(missingGames * 0.3) : "-"} minutes
+        </span>
+        <span className={"text-gray-600"}>You can reload or leave this page and come back later</span>
       </div>
     ) : (
       <>

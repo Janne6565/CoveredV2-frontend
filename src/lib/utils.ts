@@ -12,6 +12,12 @@ export function normalizePlaytime(playtime: number) {
   return `${days > 1 ? days + " Days " : days == 1 ? " 1 Day " : ""}${(hours % 24).toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}h`;
 }
 
+export function normalizeTimeToMinutes(seconds: number) {
+  const minutes = Math.floor(seconds / 60);
+  const secondsLeft = Math.floor(seconds % 60);
+  return `${minutes.toString().padStart(2, "0")}:${secondsLeft.toString().padStart(2, "0")}`;
+}
+
 /**
  * Simple fuzzy search implementation
  * Returns true if all characters in the search term appear in the target string in order (case-insensitive)

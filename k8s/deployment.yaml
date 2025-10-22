@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: covered-frontend
+  namespace: covered
+  labels:
+    app: covered-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: covered-frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: covered-frontend
+    spec:
+      containers:
+        - name: covered-frontend
+          image: janne5656/coveredv2-frontend:latest
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+          resources: {}
+          ports:
+            - containerPort: 80
