@@ -71,8 +71,7 @@ const ImageCard = ({
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className={
-            "aspect-[2/3] w-[175px] h-auto transition-transform duration-150 ease-out " + (onClick ? "hover:scale-105 cursor-pointer " : "") +
-            className
+            `aspect-[2/3] w-[175px] h-auto transition-transform duration-150 ease-out ${onClick ? "cursor-pointer" : ""} ${className} ${disableAnimation ? "" : "hover:scale-105"}`
           }
           style={{
             boxShadow: "0 10px 20px rgba(0, 0, 0, 0.3)",

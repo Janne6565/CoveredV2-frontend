@@ -51,7 +51,7 @@ const CoverCard = ({
       ref={ref as RefObject<HTMLDivElement>}
       coverUrl={[cover.thumb, cover.url]}
       altText={cover.author.name}
-      className={`transition-all border-2 possible-glow ${className}`}
+      className={`transition-all border-2 possible-glow !rounded-none ${className}`}
       style={{
         boxShadow: "0 0 10px 5px rgba(15, 50, 94, 0)"
       }}

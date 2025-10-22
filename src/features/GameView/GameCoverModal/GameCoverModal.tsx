@@ -81,7 +81,7 @@ const GameCoverModal = ({
 
           {favoriteCoverMirror &&
             <div
-              className={`fixed top-[50vh] inset-0 w-fit p-[5px] aspect-[2/3] h-auto bg-background-to justify-around text-center flex flex-col row transition-all rounded-md ${game ? "visible" : "invisible"} ${favoriteCovers[game.game.uuid] ? "opacity-100" : "opacity-0"}`}
+              className={`fixed top-[50%] inset-0 w-fit p-[5px] aspect-[2/3] h-fit w-fit bg-background-to justify-around text-center flex transition-all rounded-md ${game ? "visible" : "invisible"} ${favoriteCovers[game.game.uuid] ? "opacity-100" : "opacity-0"}`}
               style={{
                 left: "calc(calc(calc(100vw - 1100px) / 4) * -1)",
                 zIndex: 9999,
