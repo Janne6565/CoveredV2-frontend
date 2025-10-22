@@ -48,14 +48,14 @@ const GameCoverModal = ({
   }, [game]);
 
   useEffect(() => {
-    console.log(screenHeight);
-    if (screenHeight === undefined) return;
-    if (screenHeight < 1200) {
+    const height = screenHeight ?? window.innerHeight;
+    if (height === undefined) return;
+    if (height < 1200) {
       setPageSize(8);
     } else {
       setPageSize(12);
     }
-  }, [screenHeight]);
+  }, [screenHeight, game]);
 
   return (
     <Dialog open={!!game} onOpenChange={closeModalCallback}>
