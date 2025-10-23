@@ -108,7 +108,7 @@ const GameCoverModal = ({
             />
             <div
               className={
-                "flex flex-row flex-wrap gap-3 justify-evenly content-start gap-y-10 m-auto w-[80%] py-5 grow-1"
+                "flex flex-row flex-wrap gap-3 justify-center content-start gap-y-10 m-auto w-[80%] py-5 grow-1"
               }
             >
               {game &&

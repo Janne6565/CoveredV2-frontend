@@ -76,8 +76,8 @@ const ImageCard = ({
           style={{
             boxShadow: "0 10px 20px rgba(0, 0, 0, 0.3)",
             borderRadius: "12px",
-            transformStyle: "preserve-3d",
-            transform,
+            transformStyle: (disableAnimation ? undefined : "preserve-3d"),
+            transform: (disableAnimation ? undefined : transform),
             ...style
           }}
         >

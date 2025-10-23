@@ -194,7 +194,7 @@ const GameView = (props: { visible: boolean }) => {
 					) : (
 						<div
 							className={
-								"flex flex-row flex-wrap gap-8 justify-evenly gap-y-10 w-[1100px] m-auto"
+								"flex flex-row flex-wrap gap-8 justify-center gap-y-10 w-[1100px] m-auto"
 							}
 						>
 							{props.visible &&
