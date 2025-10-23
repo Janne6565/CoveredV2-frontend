@@ -30,6 +30,13 @@ export interface Author {
 	avatar: string;
 }
 
+export interface ProfileValidityEntity {
+  valid: boolean;
+  reason?: ProfileInvalidityReason;
+}
+
+export type ProfileInvalidityReason = "GAMES_NOT_ACCESSIBLE" | "PROFILE_NOT_FOUND";
+
 export type CoverStyle =
 	| "alternate"
 	| "white_logo"

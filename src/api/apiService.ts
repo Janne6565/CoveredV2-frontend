@@ -1,5 +1,5 @@
 import apiClient from "@/api/apiClient.ts";
-import type { Cover, Game } from "@/types";
+import type { Cover, Game, ProfileValidityEntity } from "@/types";
 
 const loadSteamId = async (vanityUrl: string) => {
 	return (await apiClient.get("/util/steam/resolve-vanity-url/" + vanityUrl))
@@ -31,6 +31,10 @@ const loadSteamNameFromId = async (steamId: string) => {
 		.data as string;
 };
 
+const fetchProfileValidity = async (steamId: string) => {
+  return (await apiClient.get("/util/steam/profile-validity/" + steamId)).data as ProfileValidityEntity;
+}
+
 export {
 	loadSteamId,
 	loadGamesFromFamily,
@@ -38,4 +42,5 @@ export {
 	fetchCoversFromGames,
 	exportCovers,
 	loadSteamNameFromId,
+  fetchProfileValidity,
 };

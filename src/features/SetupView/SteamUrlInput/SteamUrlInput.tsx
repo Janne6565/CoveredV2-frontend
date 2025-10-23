@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useMediaQuery } from "@/hooks/useMediaQuery.ts";
 import Link from "@/components/ui/Link.tsx";
-import HelpModal from "@/features/SetupView/SteamUrlInput/HelpModal/HelpModal.tsx";
+import FindSteamProfileHelpModal from "@/features/SetupView/SteamUrlInput/HelpModal/FindSteamProfileHelpModal.tsx";
 
 interface SteamIDInputProps {
 	onChange: (value: string) => void;
@@ -83,7 +83,7 @@ export const SteamUrlInput = ({
 				</Link>
 				<p className={"text-red-300"}>{error}</p>
 			</div>
-			<HelpModal isOpen={isHelpModalOpen} setOpen={setHelpModalOpen} />
+			<FindSteamProfileHelpModal isOpen={isHelpModalOpen} setOpen={setHelpModalOpen} />
 		</>
 	);
 };
