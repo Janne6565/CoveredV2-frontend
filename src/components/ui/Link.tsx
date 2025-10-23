@@ -13,7 +13,7 @@ const Link = (props: {
         console.log(e.key);
         if (e.key === " ") props.onClick();
       }}
-      className={"text-primary cursor-pointer " + props.className}
+      className={"text-primary cursor-pointer underline " + props.className}
       tabIndex={props.enableTab ? 0 : -1}
     >
       {props.children}
