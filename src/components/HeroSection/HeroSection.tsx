@@ -126,6 +126,7 @@ export const HeroSection = ({ title, subtitle, tagline }: HeroProps) => {
 								onClick={() => {
 									dispatch(setCovers([]));
 									dispatch(setGames([]));
+                  dispatch(clearFavorites());
 								}}
 								disabled={
 									Object.keys(games).length === 0 &&

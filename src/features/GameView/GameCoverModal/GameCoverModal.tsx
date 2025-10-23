@@ -83,7 +83,7 @@ const GameCoverModal = ({
             <div
               className={`fixed top-[50%] inset-0 w-fit p-[5px] aspect-[2/3] h-fit w-fit bg-background-to justify-around text-center flex transition-all rounded-md ${game ? "visible" : "invisible"} ${favoriteCovers[game.game.uuid] ? "opacity-100" : "opacity-0"}`}
               style={{
-                left: "calc(calc(calc(100vw - 1100px) / 4) * -1)",
+                left: "calc(calc(calc(100vw - min(1100px, 60vw)) / 4) * -1)",
                 zIndex: 9999,
                 transform: "translateY(-50%) translateX(-50%)",
                 pointerEvents: "all"
@@ -95,7 +95,7 @@ const GameCoverModal = ({
           }
 
           <DialogHeader>Covers for {game?.game.name}</DialogHeader>
-          <div className="flex flex-col space-between grow-1">
+          <div className="flex flex-col space-between grow-1 overflow-y-auto">
             <PageControl
               currentPage={currentPage}
               maxPage={maxPage}
