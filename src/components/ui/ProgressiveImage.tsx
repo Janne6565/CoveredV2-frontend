@@ -33,16 +33,40 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   useEffect(() => {
     if (!srcList?.length) return;
 
-    srcList.forEach((src) => {
+    const imgs: HTMLImageElement[] = [];
+    let canceled = false;
+
+    srcList.forEach((s) => {
       const img = new Image();
-      img.src = src;
+      imgs.push(img);
+      img.src = s;
       img.onload = () => {
-        setLoadedImages((prev) => new Set(prev).add(src));
+        if (canceled) return;
+        setLoadedImages((prev) => {
+          const next = new Set(prev);
+          next.add(s);
+          return next;
+        });
       };
       img.onerror = () => {
+        if (canceled) return;
         setError(true);
       };
     });
+
+    return () => {
+      canceled = true;
+      imgs.forEach((i) => {
+        i.onload = null;
+        i.onerror = null;
+        try {
+          // clear src to help GC
+          (i as any).src = "";
+        } catch {
+          // ignore
+        }
+      });
+    };
   }, [srcList]);
 
   useEffect(() => {
@@ -55,12 +79,34 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
     }
   }, [loadedImages, srcList]);
 
-  // When we get our first image, fade out placeholder after delay
   useEffect(() => {
     if (currentSrc && showPlaceholder) {
-      setShowPlaceholder(false);
+      if (placeholderFadeDuration > 0) {
+        const t = setTimeout(() => setShowPlaceholder(false), placeholderFadeDuration);
+        return () => clearTimeout(t);
+      } else {
+        setShowPlaceholder(false);
+      }
     }
+    // placeholderFadeDuration is used above, so include it in deps
   }, [currentSrc, showPlaceholder, placeholderFadeDuration]);
+
+  const isClickable = Boolean(props.onClick);
+  const clickableProps: Partial<React.ImgHTMLAttributes<HTMLImageElement>> = isClickable
+    ? {
+      role: (props as any).role ?? "button",
+      tabIndex: (props as any).tabIndex ?? 0,
+      onKeyDown:
+        (props as any).onKeyDown ??
+        ((e: React.KeyboardEvent<HTMLImageElement>) => {
+          const key = e.key;
+          if (key === "Enter" || key === " " || key === "Spacebar") {
+            // call original onClick handler; cast to any so runtime call works
+            (props.onClick as any)?.(e as any);
+          }
+        })
+    }
+    : {};
 
   return (
     <div className="relative w-full h-full overflow-hidden">
@@ -73,7 +119,7 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
             showPlaceholder ? "opacity-0" : "opacity-100"
           } ${className ?? ""}`}
           {...props}
-          onClick={props.onClick}
+          {...clickableProps}
         />
       )}
 
