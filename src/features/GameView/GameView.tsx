@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store.ts";
 import {
   fetchCoversFromGames,
   loadGamesFromFamily,
-  loadGamesFromPlayer
+  loadGamesFromPlayer, loadSteamNameFromId
 } from "@/api/apiService.ts";
 import ProgressAnimation from "@/components/ProgressAnimation.tsx";
 import { setGames } from "@/store/slices/gamesSlice.ts";
@@ -16,6 +16,7 @@ import GameCard from "@/features/GameView/GameCard/GameCard.tsx";
 import GameCoverModal from "@/features/GameView/GameCoverModal/GameCoverModal.tsx";
 import ExportModal from "@/features/GameView/ExportModal/ExportModal.tsx";
 import { useRehydrationStatus } from "@/hooks/useRehydrationStatus.ts";
+import { setSteamName } from "@/store/slices/userSetupSlice.ts";
 
 const GameView = (props: { visible: boolean }) => {
   const [itemsPerPage, setItemsPerPage] = useState(20);
@@ -130,6 +131,9 @@ const GameView = (props: { visible: boolean }) => {
         Object.values(games).map((game) => game.game.uuid)
       );
       dispatch(setCovers(covers));
+      if (userPreferences.steamId) {
+        dispatch(setSteamName(await loadSteamNameFromId(userPreferences.steamId)));
+      }
       return covers;
     },
     enabled:
