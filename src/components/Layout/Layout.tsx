@@ -3,6 +3,7 @@ import { Header } from "@/components/Header/Header.tsx";
 import { HeroSection } from "@/components/HeroSection/HeroSection.tsx";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import steamGridDbLogo from "@/assets/steamGridDbLogo.svg";
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,13 +24,22 @@ export const Layout = ({ children, mode }: LayoutProps) => {
         ease: "power2.out",
         duration: 0.3
       });
-    console.log("gsap");
+    gsap.fromTo(".steamgriddbref", {
+        opacity: 0,
+        top: "10px"
+      },
+      {
+        opacity: 0.5,
+        top: 0,
+        delay: 1.7,
+        duration: 0.7
+      });
   });
 
   return (
     <div
       className={
-        "w-full h-full min-h-screen flex items-center justify-center text-white dark overflow-x-hidden " +
+        "w-full min-h-screen overflow-y-clip flex items-center justify-center text-white dark overflow-x-hidden " +
         (mode === "small" ? "pb-[200px]" : "")
       }
       style={{
@@ -51,11 +61,23 @@ export const Layout = ({ children, mode }: LayoutProps) => {
 
         <div className={"relative hidden lg:block"}>{children}</div>
         <div
-          className={
-            "relative lg:hidden text-gray-500 text-xl py-[50px] pb-[100px] text-center w-[70%] mobile-not-supported-section opacity-0"
-          }
+          className={"relative lg:hidden text-gray-500 text-xl py-[50px] pb-[100px] text-center w-[70%] mobile-not-supported-section opacity-0"}
         >
           This app is not available on mobile devices.
+        </div>
+        <div className={"flex flex-row justify-center gap-20 opacity-50 mt-5 pb-20 steamgriddbref scale-90"}>
+          <a href={"https://www.steamgriddb.com/"} target={"_blank"} className={"w-[250px] grayscale-25"}>
+            <img src={steamGridDbLogo} alt="SteamGridDb" />
+          </a>
+          <div className={"flex flex-col items-center justify-center w-[350px] gap-2"}>
+            <span className={"text-xl text-gray-400 text-center"}>
+             This app is powered by <a href="https://www.steamgriddb.com" className={"underline text-blue-500"}
+                                       target={"_blank"}>SteamGridDB</a>
+            </span>
+            <span className={"text-gray-500 text-center"}>
+              All Covers are provided through SteamGridDB - you can find references to the artists of the covers by hovering over the covers.
+            </span>
+          </div>
         </div>
       </div>
     </div>

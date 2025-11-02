@@ -144,7 +144,7 @@ const GameView = (props: { visible: boolean }) => {
   });
 
   return (
-    <div className={"min-w-[60%] flex flex-col gap-6"}>
+    <div className={"min-w-[60%] flex flex-col gap-6 mb-20"}>
       {isLoading ||
       isCoversLoading ||
       (filteredAndSortedGames.length === 0 &&

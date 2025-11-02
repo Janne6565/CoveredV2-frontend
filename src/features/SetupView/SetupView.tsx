@@ -55,7 +55,6 @@ const SetupView = (props: { visible: boolean }) => {
     if (isLoading) return;
     setButtonClickCount(2);
     const { valid: isValid, reason } = await fetchProfileValidity(steamId ?? "");
-    console.log(isValid, reason);
     if (isValid || reason == undefined) {
       dispatch(setSteamName(await loadSteamNameFromId(steamId ?? "")));
       dispatch(setSteamId(steamId));
@@ -168,7 +167,7 @@ const SetupView = (props: { visible: boolean }) => {
           pointerEvents: "auto",
           duration: 0.7,
           ease: "power2.out",
-          delay: 0.6
+          delay: 0.3
         });
         setButtonClickCount(0);
       }
@@ -180,10 +179,7 @@ const SetupView = (props: { visible: boolean }) => {
     <div
       ref={container}
       className={
-        "max-h-[60vh] w-[60vw] transition-all duration-1000 " +
-        (storedSteamId !== undefined && props.visible
-          ? "h-[350px]"
-          : "h-[50px]")
+        "max-h-[60vh] w-[60vw] transition-all duration-1000 "
       }
     >
       <div

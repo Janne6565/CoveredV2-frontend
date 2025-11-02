@@ -1,10 +1,5 @@
 import type { Cover, Game } from "@/types";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle
-} from "@/components/ui/dialog.tsx";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
 import { useAppSelector } from "@/store/store.ts";
 import PageControl from "@/features/GameView/PageControl/PageControl.tsx";
 import { useEffect, useMemo, useState } from "react";
@@ -37,7 +32,7 @@ const GameCoverModal = ({
     [allCovers, game]
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(!screenHeight ? 8 : screenHeight < 1200 ? 8 : 12);
+  const [pageSize, setPageSize] = useState(8);
   const currentPageCovers = useMemo(
     () =>
       arrayCovers.slice((currentPage - 1) * pageSize, currentPage * pageSize),
@@ -67,7 +62,7 @@ const GameCoverModal = ({
     } else {
       setPageSize(12);
     }
-  }, [screenHeight, game]);
+  }, [screenHeight]);
 
   if (!game) {
     return;

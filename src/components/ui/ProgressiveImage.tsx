@@ -139,7 +139,7 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
             disableAnimation={error}
           >
             {placeholderText && (
-              <div className="flex items-center justify-center h-full w-full text-gray-400 text-center">
+              <div className="flex items-center justify-center h-full text-gray-400 text-center w-[70%]">
                 {placeholderText}
               </div>
             )}
