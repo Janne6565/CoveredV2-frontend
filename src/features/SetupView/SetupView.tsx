@@ -31,9 +31,9 @@ const SetupView = (props: { visible: boolean }) => {
     queryKey: ["steamProfileUrl", steamProfileUrl],
     queryFn: async () => {
       if (steamProfileUrl.includes("https://steamcommunity.com/profiles/")) {
-        const lastSplit = steamProfileUrl.split("/").pop();
+        const lastSplit = steamProfileUrl.split("profiles/").pop() ?? "";
         if (lastSplit) {
-          return lastSplit;
+          return lastSplit.replace("/", "");
         }
       }
       if (steamProfileUrl.includes("https://steamcommunity.com/id/")) {

@@ -65,7 +65,7 @@ export const Layout = ({ children, mode }: LayoutProps) => {
         >
           This app is not available on mobile devices.
         </div>
-        <div className={"flex flex-row justify-center gap-20 opacity-50 mt-5 pb-20 steamgriddbref scale-90"}>
+        <div className={"flex flex-col md:flex-row items-center justify-center gap-20 opacity-50 mt-5 pb-20 steamgriddbref scale-90"}>
           <a href={"https://www.steamgriddb.com/"} target={"_blank"} className={"w-[250px] grayscale-25"}>
             <img src={steamGridDbLogo} alt="SteamGridDb" />
           </a>
